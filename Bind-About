@@ -8,9 +8,54 @@ http://www.tecmint.com/setup-master-slave-dns-server-in-centos/
 
 The software was originally designed at the University of California Berkeley (UCB) in the early 1980s. The name originates as an acronym of Berkeley Internet Name Domain,[4]
 
-MyHOST.client -  192.168.1.50
-CentOS7-minimal.master - 192.168.1.51
-CentOS7-minimal.slave  - 192.168.1.52
+vivekyadav.me
+client.vivekyadav.me -  192.168.1.50
+ns1.master.vivekyadav.me - 192.168.1.51
+ns2.slave.vivekyadav.me  - 192.168.1.52
+
+On Master
+
+sudo yum install bind bind-utils
+sudo vi /etc/named.conf
+Add trsuted ACL subnetwok
+Add transfer to slave IP
+Allow trusted ACL
+include /etc/named/named.conf.local
+
+sudo vi /etc/named/named.conf.local
+create zones
+If your servers span multiple private subnets but are in the same datacenter, be sure to specify an additional zone and zone file for each distinct subnet. When you are finished adding all of your desired zones, save and exit the named.conf.local file.
+
+create forward and reverse zone files
+
+start bind and check conf
+
+ON SLAVE
+
+sudo yum install bind bind-utils
+vi /etc/named.conf
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
