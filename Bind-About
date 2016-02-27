@@ -8,6 +8,8 @@ http://www.tecmint.com/setup-master-slave-dns-server-in-centos/
 
 The software was originally designed at the University of California Berkeley (UCB) in the early 1980s. The name originates as an acronym of Berkeley Internet Name Domain,[4]
 
+By default it works on port 53, can be changed in /etc/named.conf
+
 vivekyadavs.me
 client.vivekyadavs.me -  192.168.1.50
 ns1.master.vivekyadavs.me - 192.168.1.51
