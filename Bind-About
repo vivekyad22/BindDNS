@@ -52,6 +52,100 @@ Add zones
 The zone files will be synced automatically
 
 
+/etc/named/named.conf.local
+
+zone "nyc3.example.com" {
+    type master;
+    file "/etc/named/zones/db.nyc3.example.com"; # zone file path
+};
+
+zone "128.10.in-addr.arpa" {
+    type master;
+    file "/etc/named/zones/db.10.128";  # 10.128.0.0/16 subnet
+    };
+
+
+sudo chmod 755 /etc/named
+sudo mkdir /etc/named/zones
+Now let's edit our forward zone file:
+
+sudo vi /etc/named/zones/db.nyc3.example.com
+
+$TTL    604800
+@       IN      SOA     ns1.nyc3.example.com. admin.nyc3.example.com. (
+                  3       ; Serial
+             604800     ; Refresh
+              86400     ; Retry
+            2419200     ; Expire
+             604800 )   ; Negative Cache TTL
+;
+; name servers - NS records
+     IN      NS      ns1.nyc3.example.com.
+     IN      NS      ns2.nyc3.example.com.
+
+; name servers - A records
+ns1.nyc3.example.com.          IN      A       10.128.10.11
+ns2.nyc3.example.com.          IN      A       10.128.20.12
+
+; 10.128.0.0/16 - A records
+host1.nyc3.example.com.        IN      A      10.128.100.101
+host2.nyc3.example.com.        IN      A      10.128.200.102
+
+
+
+Create Reverse Zone File(s)
+
+
+
+$TTL    604800
+@       IN      SOA     nyc3.example.com. admin.nyc3.example.com. (
+                              3         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+; name servers
+      IN      NS      ns1.nyc3.example.com.
+      IN      NS      ns2.nyc3.example.com.
+
+; PTR Records
+11.10   IN      PTR     ns1.nyc3.example.com.    ; 10.128.10.11
+12.20   IN      PTR     ns2.nyc3.example.com.    ; 10.128.20.12
+101.100 IN      PTR     host1.nyc3.example.com.  ; 10.128.100.101
+102.200 IN      PTR     host2.nyc3.example.com.  ; 10.128.200.102
+
+
+
+sudo named-checkconf
+
+
+
+FOR SLAVE
+--------------------
+
+zone "nyc3.example.com" {
+    type slave;
+    file "slaves/db.nyc3.example.com";
+    masters { 10.128.10.11; };  # ns1 private IP
+};
+
+zone "128.10.in-addr.arpa" {
+    type slave;
+    file "slaves/db.10.128";
+    masters { 10.128.10.11; };  # ns1 private IP
+};
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
