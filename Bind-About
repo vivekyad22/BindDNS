@@ -52,6 +52,9 @@ Add zones
 The zone files will be synced automatically
 
 
+
+
+
 /etc/named/named.conf.local
 
 zone "nyc3.example.com" {
